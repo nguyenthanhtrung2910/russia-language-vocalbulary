@@ -1,12 +1,21 @@
+"""
+view funtions
+"""
 from django.shortcuts import render
 
 from vocalbulary.models import Vocalbulary
 
 def index(request):
+    """
+    render main page
+    """
     return render(request, "index.html")
 
 
 def show_words(request):
+    """
+    render table of saved words
+    """
     rows = Vocalbulary.objects.all()
     row_styles = [row.pk % 6 for row in rows]
     return render(request,
@@ -15,6 +24,9 @@ def show_words(request):
 
 
 def show_stats(request):
+    """
+    render statitics
+    """
     num_words = Vocalbulary.objects.all().count()
     ratio_typed_words = Vocalbulary.objects.exclude(word_type='').exclude(
         word_type__isnull=True).count() * 100 / num_words
@@ -30,10 +42,16 @@ def show_stats(request):
 
 
 def add_word(request):
+    """
+    render add word form
+    """
     return render(request, "add_word.html")
 
 
 def add_word_processing(request):
+    """
+    process adding word
+    """
     if request.method == "POST":
         ru_word = request.POST.get("ru_word")
         if ru_word in Vocalbulary.objects.values_list('ru_word', flat=True):
@@ -51,10 +69,16 @@ def add_word_processing(request):
 
 
 def update_word(request):
+    """
+    render update word form
+    """
     return render(request, "update_word.html")
 
 
 def update_word_processing(request):
+    """
+    processing updating word
+    """
     if request.method == "POST":
         ru_word = request.POST.get("ru_word")
         en_word = request.POST.get("en_word")
